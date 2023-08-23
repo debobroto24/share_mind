@@ -1,0 +1,85 @@
+install provider -> flutter pub add provider 
+
+it will fetch data one time. if data change in backend or anything else 
+it will change data in every screen where we use that . 
+
+
+A wrapper around InheritedWidget to make them easier to use and more reusable.
+
+By using provider instead of manually writing InheritedWidget, you get:
+
+1: create a folder provider
+2: create user_provider.dart 
+inside : 
+class UserProvider with ChangeNotifier {
+    User? _user // make user it is nullabe ? and private 
+    // access this _user we create a funtion 
+    User getUser => _user!; 
+    Future<void> refreshUser()async{
+        // we fetch data below these funtion now just need to setup the provider 
+        User user = await _authMethos.getUserDetails();
+        _user = user ; 
+        notifyListeners() ; // it will notify all the provider 
+    }
+}
+
+//now er fetch the data from firbase.Basically we fetch data from our auth folder 
+
+Future<model.User> getUserDetails()async{
+    User currentUser - _auth.currentUser!; 
+    DocumentSnapshot snap = await _firestore.collection('users').doc(currentUser.uid).get();
+    return model.user(snap)// now this problem arrive 
+    // model.user accept DocumentSnapshot but its return 
+    // to solve this 
+    // model.user(
+        username : (snap.data() as Map<String , dynamic>)['username'], 
+        we have to do it in every variable 
+        that why we are making another funtion called User ; 
+        //then  we accept User type data from Static Usre fromSnap 
+    // we use that here  
+    return model.user.fromSnap(snap);
+    )
+}
+
+//in user model .dart 
+Static User fromSnap(DocumentSnapshot snap){
+    var snapshot = snapshot.data() as Map<String , dynamic>;
+    return User( 
+        username: snapshot['username'],
+        bio: snapshot['bio'],
+        //all the proparty we send here 
+    )
+}
+
+==================== now add the ===============
+in main.dart  
+wrap material app with MultiProvider(
+    //to user lots of provider 
+    ChangeNotifierProvider(
+        create: (_) => UserProvider(); // UserProvider where we create provider of user
+    )
+) ; 
+
+now we have to call refreshUser full setup o provider 
+it is the method of UserProvider 
+
+goto responsive 
+@override 
+void initState() {
+    super.initState() ;
+    add data() ;
+}
+
+addData()async{
+    UserProvider _userProvider = Provider.of(context , listen: false)
+    // listen : false for not to continously call provider 
+}
+
+
+ 
+
+
+
+
+
+

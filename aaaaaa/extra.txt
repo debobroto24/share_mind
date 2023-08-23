@@ -1,0 +1,13 @@
+access DateTime from snapshot 
+install intl dependency 
+cmd : flutter pub add intl 
+
+if you have snap data like in snap 
+snap['date'] woring 
+to access DateTime 
+DateFormat.yMMMd().format(snap['datePublished'].toDate());
+
+** 
+snap['description']
+also can access and add space or stirng by using this method 
+'{$snap['description']}'

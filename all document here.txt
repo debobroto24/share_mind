@@ -1,0 +1,90 @@
+fire store plugin -> 
+firebase_core , cloud_firestore , firebase_auth , firebase_storage 
+
+** use svg picture
+
+install plugin -> flutter pub add flutter_svg 
+
+SvgPicture.asset(
+    'path'
+    color:primaryColor , 
+    height: 55  
+)
+
+
+unknown Widgets::
+InkWell() 
+GestureDetector()
+Stack(
+children: [
+    const CircleAvatar(
+        radius: 64,
+        backgroundImage: AssetImage('assets/pic1.jpg')),
+    Positioned(
+    bottom: -10,
+    left: 80,
+    child: IconButton(
+        onPressed: () {},
+        icon: const Icon(
+        Icons.add_a_photo,
+        ),
+    ),
+    )
+],
+),
+
+
+
+
+
+
+
+
+** to select image 
+install dependencies image_picker cmd : flutter pub add image_picker 
+
+
+
+
+
+
+
+
+** if any problem on uploadin file 
+go to storage in firebase then change the rules to 
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write;
+    }
+  }
+}
+
+
+
+      username = (snap.data() as Map<String, dynamic>)['username'];
+
+
+** if we get data from firestore like->
+  void getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+      setState((
+        usesrname = snap.data()!['username'];
+      ){
+
+      });
+    print(snap.data());
+  }
+if show error that return type object by using under setState style  avobe there
+than we have to make it object like
+   username = (snap.data() as Map<String, dynamic>)['username'];
+
+   cause Map is subtype of object .
+   we are daynamicly saying that the object there is map 
+
+
